@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Dashboard</title>
+    <title>Widget Dashboard</title>
+	<link rel="icon" href="icon.ico" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -31,8 +32,8 @@
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background-image: 
-                linear-gradient(rgba(192,57,43,.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(192,57,43,.03) 1px, transparent 1px);
+                linear-gradient(rgba(192,57,43,.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(192,57,43,.07) 1px, transparent 1px);
             background-size: 32px 32px;
             z-index: -1;
         }
@@ -165,6 +166,8 @@
     </style>
 </head>
 <body>
+<audio id="timerSound" src="alert.mp3" preload="auto"></audio>
+<audio id="swStartSound" src="startSW.mp3" preload="auto"></audio>
 
     <div class="carousel">
         <button class="nav-btn prev" onclick="changeWidget(-1)">&#10094;</button>
@@ -285,17 +288,21 @@
 
         isPaused = false;
 
-        timerInterval = setInterval(() => {
-            totalSeconds--;
-            updateTimerDisplay();
+timerInterval = setInterval(() => {
+    totalSeconds--;
+    updateTimerDisplay();
 
-            if (totalSeconds <= 0) {
-                clearInterval(timerInterval);
-                alert("Время вышло!");
-                resetTimer();
-            }
-        }, 1000);
+    if (totalSeconds <= 0) {
+        clearInterval(timerInterval);
+        
+        // ВОТ ЭТА СТРОЧКА ЗАПУСКАЕТ ЗВУК
+        document.getElementById('timerSound').play(); 
+        
+        alert("Время вышло!");
+        resetTimer();
     }
+}, 1000);
+}
 
     function stopTimer() {
         clearInterval(timerInterval);
@@ -336,6 +343,7 @@ let swElapsedTime = 0;
 let flagCount = 0;
 
 function startSW() {
+	document.getElementById('swStartSound').play();
     swStartTime = Date.now() - swElapsedTime;
     
     document.getElementById('swStartBtn').style.display = 'none';
@@ -405,7 +413,7 @@ function formatSWTime(ms, withStyledMs = false) {
     return `${h}${m}:${s}.${msStr}`;
 }
 
-const API_KEY = 'ВАШ_API_КЛЮЧ'; // <--- ВСТАВЬ КЛЮЧ СЮДА
+const API_KEY = 'd42e6afc668417a49dd5afff4b81df89'; // <--- ВСТАВЬ КЛЮЧ СЮДА
 const CITY = 'Sibay';
 
 function updateWeather() {
