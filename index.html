@@ -416,6 +416,7 @@ const API_KEY = 'd42e6afc668417a49dd5afff4b81df89'; // <--- ВСТАВЬ КЛЮ�
 const CITY = 'Sibay';
 
 function updateWeather() {
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${CITY}&appid=${API_KEY}&units=metric&lang=ru`)
         .then(response => response.json())
         .then(data => {
             const temperature = Math.round(data.main.temp);
